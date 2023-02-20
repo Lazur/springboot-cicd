@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Spring flow
+name: Spring CI/CD
 
 # Controls when the workflow will run
 on:
@@ -32,12 +32,16 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      
-      - name: Test application
-        run: mvn test
 
-      - name: Build application
-        run: mvn package -DskipTests
+      - name: Cache the Maven packages to speed up build
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2    
+
+      - name: Test and Build application
+        run: mvn package
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
