@@ -34,10 +34,11 @@ jobs:
           java-version: 17
       
       - name: Test application
+        working-directory: springboot-cicd
         run: ./mvn test
 
       - name: Build application
-        # working-directory: application
+        working-directory: springboot-cicd
         run: ./mvn package -DskipTests
 
       # Runs a single command using the runners shell
