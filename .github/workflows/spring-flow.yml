@@ -108,7 +108,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
-          script: ls -la /home/ec2-home
+          script: ls -la /home/ec2-user
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
