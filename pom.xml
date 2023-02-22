@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>springcource</name>
+	<version>0.0.2</version>
+	<name>springcourse</name>
 	<description>Demo project for testing CI/CD on Spring Boot and AWS</description>
 	<properties>
 		<java.version>17</java.version>
@@ -48,6 +48,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <to>
+                        <image>${project.artifactId}-${project.version}</image>
+                    </to>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
