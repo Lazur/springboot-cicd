@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the PID of the "myapp" process
-PID=$(pgrep -f java -jar demo-0.0.1-SNAPSHOT.jar)
+PID=$(pgrep -f 'java -jar demo-0.0.1-SNAPSHOT.jar')
 
 # If the process is running, terminate it
 if [ -n "$PID" ]; then
