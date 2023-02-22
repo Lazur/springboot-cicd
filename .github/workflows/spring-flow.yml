@@ -88,8 +88,11 @@ jobs:
       - name: Listing directory
         run: ls -la /home/runner/work/springboot-cicd
 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Listing 
-        run: ls -la .github  
+        run: ls -la .github
 
       - name: Copy re-run script to EC2
         uses: appleboy/scp-action@master
@@ -98,7 +101,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
-          source: /home/runner/work/springboot-cicd/springboot-cicd/.github/workflows/kill-app.sh
+          source: .github/workflows/kill-app.sh
           target: /home/ec2-user
 
       - name: Push to EC2
