@@ -123,7 +123,7 @@ jobs:
           script: |
             cd /home/ec2-user
             chmod +x kill-app.sh
-            ./kill-app.sh
+            sh kill-app.sh
             scp /tmp/demo-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
       - name: Push to EC2
