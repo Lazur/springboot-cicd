@@ -101,6 +101,17 @@ jobs:
           source: .github/workflows/kill-app.sh
           target: /home/ec2-user
 
+      - name: Verify files were copied
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: ls -la /home/ec2-home
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
       - name: Run script on EC2
         uses: appleboy/ssh-action@master
         with:
