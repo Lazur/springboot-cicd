@@ -113,7 +113,7 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           script: |
             cd /tmp
-            scp -i /tmp/demo-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+            scp /tmp/demo-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
       - name: Run script on EC2
         uses: appleboy/ssh-action@master
