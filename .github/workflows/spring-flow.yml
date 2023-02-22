@@ -86,7 +86,10 @@ jobs:
           path: /tmp/demo-0.0.1-SNAPSHOT.jar
 
       - name: Listing directory
-        run: ls -la /tmp && ls -la /home/runner/work/springboot-cicd/springboot-cicd
+        run: ls -la /home/runner/work/springboot-cicd
+
+      - name: Listing 
+        run: ls -la .github  
 
       - name: Copy re-run script to EC2
         uses: appleboy/scp-action@master
