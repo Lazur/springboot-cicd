@@ -55,6 +55,7 @@ jobs:
 
 
   publish-job:
+      name: Publish artifact
       runs-on: ubuntu-latest
       needs: [build_and_test]
       steps:
