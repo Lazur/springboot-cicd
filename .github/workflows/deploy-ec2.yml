@@ -18,7 +18,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: demo-0.0.1-SNAPSHOT.jar
-          path: /tmp/demo-0.0.1-SNAPSHOT.jar
+          repository: lazur/springboot-cicd
+          path: .github/workflows/spring-flow.yml
+          # path: /tmp/demo-0.0.1-SNAPSHOT.jar
 
       - name: Listing directory
         run: ls -la
