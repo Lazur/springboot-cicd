@@ -104,6 +104,18 @@ jobs:
           source: .github/workflows/kill-app.sh
           target: /home/ec2-user
 
+      - name: Run script on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            cd /home/ec2-user
+            chmod +x kill-app.sh
+            ./kill-app.sh
+
       - name: Push to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -118,15 +130,3 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           StrictHostKeyChecking: no
-
-      - name: Run script on EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.EC2_PORT }}
-          script: |
-            cd /home/ec2-user
-            chmod +x kill-app.sh
-            ./kill-app.sh
