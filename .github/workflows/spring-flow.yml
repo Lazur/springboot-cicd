@@ -115,6 +115,7 @@ jobs:
             cd /tmp
             scp /tmp/demo-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
         env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
           StrictHostKeyChecking: no
 
       - name: Run script on EC2
