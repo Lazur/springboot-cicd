@@ -103,7 +103,7 @@ jobs:
             aws s3 cp s3://kyrylo-popov-task1-static-website/jib-image.tar jib-image.tar
             docker kill $(docker ps -q)
             docker load -i jib-image.tar
-            docker run  -p 80:8080 demo-0.0.2
+            docker run -d -p 80:8080 demo-0.0.2
 
       # - name: Copy artifact to EC2
       #   uses: appleboy/scp-action@master
