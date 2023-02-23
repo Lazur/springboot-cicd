@@ -11,7 +11,7 @@ public class DemoController {
 
     @GetMapping("/")
     public String index() {
-        return "hello spring ci/cd";
+        return "hello spring ci/cd updated";
     }
     
 }
