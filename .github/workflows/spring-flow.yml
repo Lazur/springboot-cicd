@@ -81,6 +81,30 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws s3 cp jib-image.tar s3://kyrylo-popov-task1-static-website --recursive --region eu-west-1
+      
+      - name: Copy re-run script to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          source: .github/workflows/kill-app.sh
+          target: /home/ec2-user
+
+      - name: Copy artifact to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            aws s3 cp s3://kyrylo-popov-task1-static-website/jib-image.tar jib-image.tar
+            sh .github/workflows/kill-app.sh
+            docker load -i jib-image.tar
+            docker run  -p 80:8080 jib-image.tar
+
       # - name: Copy artifact to EC2
       #   uses: appleboy/scp-action@master
       #   with:
@@ -94,26 +118,8 @@ jobs:
       # - name: Checkout code
       #   uses: actions/checkout@v2
 
-      # - name: Copy re-run script to EC2
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.EC2_HOST }}
-      #     username: ${{ secrets.EC2_USERNAME }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     port: ${{ secrets.EC2_PORT }}
-      #     source: .github/workflows/kill-app.sh
-      #     target: /home/ec2-user
 
-      # - name: Move script file
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.EC2_HOST }}
-      #     username: ${{ secrets.EC2_USERNAME }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     port: ${{ secrets.EC2_PORT }}
-      #     script: mv .github/workflows/kill-app.sh /home/ec2-user/kill-app.sh
-      #   env:
-      #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
 
       # - name: Run script on EC2
       #   uses: appleboy/ssh-action@master
