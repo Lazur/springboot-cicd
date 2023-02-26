@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+  pre_build:
+    commands:
+      # Log in to the ECR registry
+    -  $(aws ecr get-login --no-include-email --region eu-west-1>)
+    -  echo Installing Jib
+      # Install Jib
+    # -  curl -Lo jib https://github.com/GoogleContainerTools/jib/releases/download/v3.1.0/jib-core-3.1.0.jar
+    # -  chmod +x jib
+      # Install Docker
+      # apt-get update
+      # apt-get install -y docker.io
+  build:
+    commands:
+      # Build the Docker image with Jib and push it to ECR
+    -  ./mvnw compile jib:build -Dimage=585753892439.dkr.ecr.eu-west-1.amazonaws.com/spring-app:latest
+      # docker push <your ECR repository URI>/<image name>:<tag>
