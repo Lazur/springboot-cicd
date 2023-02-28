@@ -55,6 +55,7 @@
                 <configuration>
                     <to>
                         <image>585753892439.dkr.ecr.eu-west-1.amazonaws.com/spring-app-repo/${project.artifactId}-${project.version}:latest</image>
+						<credHelper>ecr</credHelper>
                     </to>
                 </configuration>
             </plugin>
