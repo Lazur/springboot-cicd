@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       # Log in to the ECR registry
-    -  $(aws ecr get-login --no-include-email --region eu-west-1)
+    -  $(aws ecr get-login-password --region eu-west-1)
     -  echo Installing Jib
       # Install Jib
     # -  curl -Lo jib https://github.com/GoogleContainerTools/jib/releases/download/v3.1.0/jib-core-3.1.0.jar
