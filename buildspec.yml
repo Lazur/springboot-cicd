@@ -10,7 +10,7 @@ phases:
     - echo Logging in to Amazon ECR...
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
     - sudo apt update
-    - sudo apt install amazon-ecr-credential-helper -y
+    - sudo apt install amazon-ecr-credential-helper --yes
     - echo Installing Jib
       # Install Jib
     # -  curl -Lo jib https://github.com/GoogleContainerTools/jib/releases/download/v3.1.0/jib-core-3.1.0.jar
