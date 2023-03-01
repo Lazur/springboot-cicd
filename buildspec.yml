@@ -22,7 +22,7 @@ phases:
     commands:
     - echo $IMAGE_REPO_NAME:$IMAGE_TAG
       # Build the Docker image with Jib and push it to ECR
-    - mvn compile jib:build -Dimage=$IMAGE_REPO_NAME:$IMAGE_TAG -DawsAccessKeyId=$AWS_ACCESS_KEY_ID -DawsSecretAccessKey=$AWS_SECRET_ACCESS_KEY
+    - mvn compile jib:build -Dimage=$AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG -DawsAccessKeyId=$AWS_ACCESS_KEY_ID -DawsSecretAccessKey=$AWS_SECRET_ACCESS_KEY
     - echo Set tag
     # - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
     - echo Push image to ECR
