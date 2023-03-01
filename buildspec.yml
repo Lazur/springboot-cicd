@@ -9,24 +9,7 @@ phases:
       # Log in to the ECR registry
     - echo Logging in to Amazon ECR...
     # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-    - sudo apt update
-    - sudo apt install amazon-ecr-credential-helper --yes
-    - echo Installing Jib
-      # Install Jib
-    # -  curl -Lo jib https://github.com/GoogleContainerTools/jib/releases/download/v3.1.0/jib-core-3.1.0.jar
-    # -  chmod +x jib
-      # Install Docker
-      # apt-get update
-      # apt-get install -y docker.io
   build:
     commands:
-    - echo $IMAGE_REPO_NAME:$IMAGE_TAG
-    - echo $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-    - echo awsAccessKeyId=$AWS_ACCESS_KEY_ID awsSecretAccessKey=$AWS_SECRET_ACCESS_KEY
       # Build the Docker image with Jib and push it to ECR
     - mvn compile jib:build -Dimage=$AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG -DawsAccessKeyId=$AWS_ACCESS_KEY_ID -DawsSecretAccessKey=$AWS_SECRET_ACCESS_KEY
-    - echo Set tag
-    # - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
-    - echo Push image to ECR
-    # - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      # docker push <your ECR repository URI>/<image name>:<tag>
