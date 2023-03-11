@@ -80,7 +80,7 @@ jobs:
         with:
           path: |
             ~/.m2/repository
-          key: ${{ runner.os }}-m2-maven
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
       # - name: Cache the Maven packages to speed up build
       #   uses: actions/cache@v3
