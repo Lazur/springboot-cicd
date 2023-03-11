@@ -85,6 +85,7 @@ jobs:
         run: mvn checkstyle:check
       
       - name: Runner.os check
+        if: always()
         run: | 
           echo ${{ runner.os }}
           echo ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
