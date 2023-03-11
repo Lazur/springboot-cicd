@@ -80,7 +80,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2    
 
-      - name: Runs unit tests
+      - name: Runs checkstyle
+        if: always()
         run: mvn checkstyle:check
       
       - name: Runner.os check
