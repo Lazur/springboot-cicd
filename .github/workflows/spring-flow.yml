@@ -15,18 +15,58 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  login-to-amazon-ecr:
     runs-on: ubuntu-latest
-    name: Build and test simple Spring app
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    name: AWS ECR login
+    #Login to AWS ECR and save the results in order to use it further to push docker image
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::585753892439:role/service-role/codebuild-spring-app-jib-build-service-role
+          aws-region: eu-west-1
+          mask-aws-account-id: 'false'
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1 #spring-app-repo
+    outputs:
+      registry: ${{ steps.login-ecr.outputs.registry }}
+      docker_username: ${{ steps.login-ecr.outputs.docker_username_123456789012_dkr_ecr_us_east_1_amazonaws_com }} # More information on these outputs can be found below in the 'Docker Credentials' section
+      docker_password: ${{ steps.login-ecr.outputs.docker_password_123456789012_dkr_ecr_us_east_1_amazonaws_com }}
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
 
+      - name: Cache the Maven packages to speed up build
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2    
+      - name: Runs unit tests
+        run: mvn test
+      - name: Runner.os check
+        run: | 
+          echo ${{ runner.os }}
+          echo ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+
+  checkstyle:
+    runs-on: ubuntu-latest
+    name: Checkstyle
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -40,66 +80,88 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2    
 
-      - name: Build docker image
-        run: mvn compile jib:buildTar
+      - name: Runs unit tests
+        run: mvn checkstyle:check
       
-      - name: Upload artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: jib-image.tar
-          path: target/jib-image.tar
+      - name: Runner.os check
+        run: | 
+          echo ${{ runner.os }}
+          echo ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+  # This workflow contains a single job called "build"
+  # build:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   name: Build simple Spring app
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
+  #     - name: Set up JDK 17
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: 17
+
+  #     - name: Cache the Maven packages to speed up build
+  #       uses: actions/cache@v1
+  #       with:
+  #         path: ~/.m2
+  #         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+  #         restore-keys: ${{ runner.os }}-m2    
+
+  #     - name: Build docker image
+  #       run: mvn compile jib:buildTar
+      
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v1
+  #       with:
+  #         name: jib-image.tar
+  #         path: target/jib-image.tar
   
-  #Deploy artifact to EC2 instance via ssh
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: jib-image.tar
-          repository: lazur/springboot-cicd
-          path: jib-image.tar
+  # #Deploy artifact to EC2 instance via ssh
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: [build]
+  #   steps:
+  #     - name: Download artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: jib-image.tar
+  #         repository: lazur/springboot-cicd
+  #         path: jib-image.tar
       
-      - name: Listing 
-        run: ls -la
+  #     - name: Listing 
+  #       run: ls -la
 
-      - name: Upload artifact to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp jib-image.tar s3://kyrylo-popov-task1-static-website --recursive --region eu-west-1
+  #     - name: Upload artifact to S3
+  #       env:
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       run: |
+  #         aws s3 cp jib-image.tar s3://kyrylo-popov-task1-static-website --recursive --region eu-west-1
 
-      - name: Copy artifact to EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.EC2_PORT }}
-          script: |
-            aws s3 cp s3://kyrylo-popov-task1-static-website/jib-image.tar jib-image.tar
+  #     - name: Copy artifact to EC2
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USERNAME }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         port: ${{ secrets.EC2_PORT }}
+  #         script: |
+  #           aws s3 cp s3://kyrylo-popov-task1-static-website/jib-image.tar jib-image.tar
             
-      - name: Run artifact on EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.EC2_PORT }}
-          script: |
-            docker kill $(docker ps -q)
-            docker load -i jib-image.tar
-            docker run -d -p 80:8080 demo-0.0.2
+  #     - name: Run artifact on EC2
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ${{ secrets.EC2_USERNAME }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         port: ${{ secrets.EC2_PORT }}
+  #         script: |
+  #           docker kill $(docker ps -q)
+  #           docker load -i jib-image.tar
+  #           docker run -d -p 80:8080 demo-0.0.2
