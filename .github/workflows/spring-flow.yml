@@ -82,6 +82,18 @@ jobs:
           java-version: 17
           cache: 'maven'
 
+      - name: Cache the Maven packages to speed up build
+        uses: actions/cache@v3
+        id: cache-maven
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-maven  
+ 
+      - name: Check caches
+        run: |
+          ls -la ~/.m2  
+          
       - name: Restore cached Maven
         id: cache-maven-restore
         uses: actions/cache/restore@v3
