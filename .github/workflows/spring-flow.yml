@@ -57,7 +57,7 @@ jobs:
 
       - name: Runner.os check
         run: | 
-          echo ${{ steps.cache-primes.outputs.cache-hit }}
+          echo ${{ steps.cache-maven.outputs.cache-hit }}
           echo ${{ runner.os }}
           echo ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
@@ -84,7 +84,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-maven
       - name: Runner.os check
         run: | 
-          echo ${{ steps.cache-primes.outputs.cache-hit }}
+          echo ${{ steps.cache-maven.outputs.cache-hit }}
           echo ${{ runner.os }}
           echo ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
