@@ -124,7 +124,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    needs: [cache_maven_deps]
+    needs: [cache_maven_deps, test]
     name: Build simple Spring app
 
   #   # Steps represent a sequence of tasks that will be executed as part of the job
