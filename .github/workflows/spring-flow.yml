@@ -74,14 +74,21 @@ jobs:
       #   with:
       #     distribution: 'temurin'
       #     java-version: 17
-
-      - name: Cache the Maven packages to speed up build
-        uses: actions/cache@v3
-        id: cache-maven
+      - name: Restore cached Maven
+        id: cache-maven-restore
+        uses: actions/cache/restore@v3
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2-maven
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-m2-maven
+
+      # - name: Cache the Maven packages to speed up build
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.m2/repository
+      #     key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+      #     restore-keys: ${{ runner.os }}-m2-maven
+
       - name: Runner.os check
         run: | 
           echo ${{ steps.cache-maven.outputs.cache-hit }}
