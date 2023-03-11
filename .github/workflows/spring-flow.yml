@@ -47,6 +47,10 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: maven Copy
+        run: |
+          mvn dependency:copy-dependencies
+
       - name: Cache the Maven packages to speed up build
         uses: actions/cache@v3
         id: cache-maven
@@ -78,6 +82,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+          cache: 'maven'
 
       - name: Restore cached Maven
         id: cache-maven-restore
