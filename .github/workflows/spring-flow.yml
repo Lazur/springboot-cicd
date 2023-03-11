@@ -51,13 +51,13 @@ jobs:
         uses: actions/cache@v3
         id: cache-maven
         with:
-          path: ~/.m2/repository
+          path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-maven  
  
       - name: Check caches
         run: |
-          ls -la ~/.m2/repository
+          ls -la ~/.m2
 
       - name: Runner.os check
         run: | 
@@ -83,7 +83,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: |
-            ~/.m2/repository
+            ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-maven
 
