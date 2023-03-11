@@ -92,16 +92,7 @@ jobs:
  
       - name: Check caches
         run: |
-          ls -la ~/.m2  
-          
-      - name: Restore cached Maven
-        id: cache-maven-restore
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2-maven
+          ls -la ~/.m2
 
       - name: Runner.os check
         run: | 
