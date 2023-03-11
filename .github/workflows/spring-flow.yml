@@ -53,7 +53,11 @@ jobs:
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2-maven   
+          restore-keys: ${{ runner.os }}-m2-maven  
+ 
+      - name: Check caches
+        run: |
+          ls -la ~/.m2/repository
 
       - name: Runner.os check
         run: | 
@@ -66,8 +70,8 @@ jobs:
     needs: [cache_maven_deps]
     name: Test
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       
       # - name: Set up JDK 17
       #   uses: actions/setup-java@v3
