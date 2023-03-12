@@ -161,6 +161,9 @@ jobs:
       - name: cache hit check
         run: | 
           echo "cache hits? - " ${{ steps.cache-maven.outputs.cache-hit }}
+          echo $AWS_ACCESS_KEY_ID
+          echo $AWS_SECRET_ACCESS_KEY
+          
       - name: Maven Jib build and push
         run: |
           mvn compile jib:build 
