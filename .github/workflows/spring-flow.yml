@@ -163,7 +163,8 @@ jobs:
           echo "cache hits? - " ${{ steps.cache-maven.outputs.cache-hit }}
           echo $AWS_ACCESS_KEY_ID
           echo $AWS_SECRET_ACCESS_KEY
-          
+          echo $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG 
+
       - name: Maven Jib build and push
         run: |
           mvn compile jib:build 
