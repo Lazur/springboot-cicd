@@ -199,6 +199,7 @@ jobs:
         run: |
           mvn compile jib:build 
           -Dimage=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-1.amazonaws.com/${{ secrets.IMAGE_REPO_NAME}}:${{ secrets.IMAGE_TAG }}
+          -Djib.auth.credentialsHelper=ecr-login
           
   # -DawsAccessKeyId=${{ secrets.AWS_ACCESS_KEY_ID }} -DawsSecretAccessKey=${{ secrets.AWS_SECRET_ACCESS_KEY }}
   #     - name: Build docker image
