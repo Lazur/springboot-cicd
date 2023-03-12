@@ -190,6 +190,13 @@ jobs:
       #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       #     aws-region: eu-west-1
+      - name: Install docker-credential-ecr-login
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          docker --version
+          sudo curl -Lo /usr/local/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.4/docker-credential-ecr-login-linux-amd64-v0.6.4
+          sudo chmod +x /usr/local/bin/docker-credential-ecr-login
 
       - name: Maven Jib build and push
         run: |
