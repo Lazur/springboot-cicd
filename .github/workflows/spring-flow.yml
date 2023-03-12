@@ -193,9 +193,7 @@ jobs:
       - name: Install docker-credential-ecr-login
         run: |
           sudo apt-get update
-          sudo apt install amazon-ecr-credential-helper --yes
-          sudo apt-get install -y docker.io
-          docker --version
+          sudo apt-get install amazon-ecr-credential-helper --yes
           sudo curl -Lo /usr/local/bin/docker-credential-ecr-login https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.4/docker-credential-ecr-login-linux-amd64-v0.6.4
           sudo chmod +x /usr/local/bin/docker-credential-ecr-login
 
