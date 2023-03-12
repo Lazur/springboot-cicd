@@ -39,7 +39,7 @@ jobs:
     name: Login ECR
     steps:
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -170,14 +170,19 @@ jobs:
         run: | 
           echo "cache hits? - " ${{ steps.cache-maven.outputs.cache-hit }}
 
-      - name: Configure AWS credentials from Test account
+      # - name: Configure AWS credentials from Test account
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     role-to-assume: arn:aws:iam::585753892439:role/service-role/codebuild-spring-app-jib-build-service-role
+      #     aws-region: eu-west-1
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::585753892439:role/service-role/codebuild-spring-app-jib-build-service-role
-          aws-region: eu-west-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        
+          aws-region: eu-west-1        
 
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1
