@@ -190,6 +190,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1   
+          role-to-assume: arn:aws:iam::585753892439:role/service-role/codebuild-spring-app-jib-build-service-role
 
       - name: Login to Amazon ECR
         id: login-ecr
