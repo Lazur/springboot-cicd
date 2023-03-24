@@ -123,10 +123,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-maven  
   
-      - name: cache hit check
-        run: | 
-          echo "cache hits? - " ${{ steps.cache-maven.outputs.cache-hit }}
-
       - name: Runs checkstyle
         if: always()
         run: mvn checkstyle:check
@@ -137,10 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [cache_maven_deps, test]
     name: Build simple Spring app
-    # permissions:
-    #   id-token: write
-    #   contents: read    
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
+    if: ${{ needs.test.result == 'success' }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
@@ -159,24 +152,10 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2-maven  
-      
-      # - name: Install helpers
-      #   run: |
-      #     aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-1.amazonaws.com
-      #     sudo apt update
-      #     sudo apt install amazon-ecr-credential-helper --yes
 
       - name: cache hit check
         run: | 
           echo "cache hits? - " ${{ steps.cache-maven.outputs.cache-hit }}
-
-      # - name: Configure AWS credentials from Test account
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: arn:aws:iam::585753892439:role/service-role/codebuild-spring-app-jib-build-service-role
-      #     aws-region: eu-west-1
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Install docker-credential-ecr-login
         run: |
