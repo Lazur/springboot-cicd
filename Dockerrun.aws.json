@@ -1,13 +1,12 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "585753892439.dkr.ecr.eu-west-1.amazonaws.com/spring-app-repo",
+      "Name": "585753892439.dkr.ecr.eu-west-1.amazonaws.com/spring-app-repo:latest",
       "Update": "true"
     },
     "Ports": [
       {
-        "ContainerPort": "8080",
-        "HostPort":80
+        "ContainerPort": "8080"
       }
     ]
   }

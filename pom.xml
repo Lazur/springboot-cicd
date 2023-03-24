@@ -58,7 +58,7 @@
 						<credHelper>ecr-login</credHelper>
 					</from>
                     <to>
-                        <image>585753892439.dkr.ecr.eu-west-1.amazonaws.com/spring-app-repo/${project.artifactId}-${project.version}:latest</image>
+                        <image>585753892439.dkr.ecr.eu-west-1.amazonaws.com/spring-app-repo:latest</image>
 						<credHelper>ecr-login</credHelper>
                     </to>
                 </configuration>
