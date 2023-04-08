@@ -153,5 +153,5 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           environment_name: Spring-app-env-dev
           application_name: spring-app
-          version_label: ${{ github.sha }}
+          version_label: spring-app-1
           region: eu-west-1
