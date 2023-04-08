@@ -145,3 +145,9 @@ jobs:
       - name: Maven Jib build and push
         run: |
           mvn compile jib:build
+      
+      - name: Deploy to Elastic Beanstalk
+        run: |
+          eb init spring-app
+          eb use Spring-app-env-dev
+          eb deploy
