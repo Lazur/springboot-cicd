@@ -147,7 +147,8 @@ jobs:
           mvn compile jib:build
       
       - name: Deploy to Elastic Beanstalk
-        run: |
-          eb init spring-app
-          eb use Spring-app-env-dev
-          eb deploy
+        uses: aws-actions/elastic-beanstalk-deploy@v3
+        with:
+          environment-name: Spring-app-env-dev
+          application-name: spring-app
+          version-label: ${{ github.sha }}
