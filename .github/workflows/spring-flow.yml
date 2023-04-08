@@ -151,7 +151,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          environment-name: Spring-app-env-dev
-          application-name: spring-app
+          environment_name: Spring-app-env-dev
+          application_name: spring-app
           version_label: ${{ github.sha }}
           region: eu-west-1
