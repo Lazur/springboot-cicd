@@ -153,5 +153,5 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           environment_name: e-vb8jzasfvm
           application_name: spring-app
-          version_label: spring-app-1
+          version_label: 0.1-12
           region: eu-west-1
